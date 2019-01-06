@@ -184,6 +184,17 @@ class InferenceGraph {
 	void makeEdges() {
 		for (Tac tac = bb.tacList; tac != null; tac = tac.next) {
 //			System.out.println("line"+tac.bbNum);
+			if(tac.liveOut!=null)
+			{
+				for(Temp temp:tac.liveOut)
+				{
+					for(Temp temp2:tac.liveOut)
+					{
+						if(!temp.equals(temp2))
+							addEdge(temp, temp2);
+					}
+				}
+			}
 			switch (tac.opc) {
 				case ADD: case SUB: case MUL: case DIV: case MOD:
 				case LAND: case LOR: case GTR: case GEQ: case EQU:
