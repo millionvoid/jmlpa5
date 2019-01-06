@@ -39,9 +39,8 @@ public class GraphColorRegisterAllocator implements RegisterAllocator {
 		this.bb = bb;
 		clear();
 
-		
+//		System.out.println("fuck");
 		// Use InferenceGraph to do basicblock-wise register allocation here.
-		inferenceGraph.alloc(bb, regs, fp.reg);
 //		System.out.println("into load");
 		if(bb!=null && bb.saves!=null)
 		{
@@ -55,18 +54,28 @@ public class GraphColorRegisterAllocator implements RegisterAllocator {
 		{
 //			System.out.println("liveUse load "+temp.name);
 			load(bb.tacList, temp);
+//			System.out.println("in GRA addNode:");
+			inferenceGraph.addNode(temp);
+//			System.out.println("in GRA addNode end:");
 		}
-//		for(Temp temp: bb.liveIn)
-//		{
-////			System.out.println("liveIn load "+temp.name);
+		for(Temp temp: bb.liveIn)
+		{
+//			System.out.println("liveIn load "+temp.name);
 //			load(bb.tacList, temp);
-//		}
-//		for(Temp temp: bb.liveOut)
-//		{
-////			System.out.println("liveIn load "+temp.name);
+//			System.out.println("in GRA addNode:");
+			inferenceGraph.addNode(temp);
+//			System.out.println("in GRA addNode end:");
+		}
+		for(Temp temp: bb.liveOut)
+		{
+//			System.out.println("liveIn load "+temp.name);
 //			load(bb.tacList, temp);
-//		}
+//			System.out.println("in GRA addNode:");
+			inferenceGraph.addNode(temp);
+//			System.out.println("in GRA addNode end:");
+		}
 		// But before that, you have to do something.
+		inferenceGraph.alloc(bb, regs, fp.reg);
 		
 		Tac tail = null;
 		for (Tac tac = bb.tacList; tac != null; tail = tac, tac = tac.next) {

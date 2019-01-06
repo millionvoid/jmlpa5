@@ -47,7 +47,7 @@ class InferenceGraph {
 	}
 
 
-	private void addNode(Temp node) {
+	public void addNode(Temp node) {
 //		System.out.println("try add node:"+node.name);
 		if (nodes.contains(node))
 		{
@@ -206,16 +206,19 @@ class InferenceGraph {
 					/* use op1, def op0 */
 					if(tac.op0!=null)
 					{
-						for(Temp temp:tac.liveOut)
+						if(tac.liveOut!=null)
 						{
-							if(!temp.equals(tac.op0))
-								addEdge(temp, tac.op0);
-//							System.out.println("addedge between "+temp.name+" and "+tac.op0.name);
-							for(Temp temp2:tac.liveOut)
+							for(Temp temp:tac.liveOut)
 							{
-								if(!temp.equals(temp2))
-									addEdge(temp, temp2);
+								if(!temp.equals(tac.op0))
+									addEdge(temp, tac.op0);
 //								System.out.println("addedge between "+temp.name+" and "+tac.op0.name);
+								for(Temp temp2:tac.liveOut)
+								{
+									if(!temp.equals(temp2))
+										addEdge(temp, temp2);
+//									System.out.println("addedge between "+temp.name+" and "+tac.op0.name);
+								}
 							}
 						}
 					}
